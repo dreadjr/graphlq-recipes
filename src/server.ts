@@ -16,11 +16,6 @@ import { MONGO_URI } from '../config/keys';
 
 const port = process.env.PORT || 4000;
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers
-});
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,
