@@ -1,13 +1,16 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as mongoose from 'mongoose';
+
+import * as cors from 'cors';
+
 // const test = require('../config/test');
 
 import { ApolloServer, gql } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 
 import { resolvers } from '../resolvers/resolvers';
-import { typeDefs } from '../types/schema';
+import typeDefs from '../types/schema';
 
 import User from '../models/User';
 import Recipe from '../models/Recipe';
@@ -34,6 +37,12 @@ mongoose
   .catch(err => console.log(err));
 
 const app = express();
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true
+};
+app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

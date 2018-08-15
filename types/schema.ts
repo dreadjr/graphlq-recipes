@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-express';
 
-export const typeDefs = gql`
+export default gql`
   type User {
     _id: ID!
     username: String! @unique
@@ -26,7 +26,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getAllRecipes: [Recipe]
+    getAllRecipes: [Recipe!]
   }
 
   type Mutation {
@@ -37,6 +37,18 @@ export const typeDefs = gql`
       instructions: String!
       username: String
     ): Recipe
+
+    getRecipe(_id: ID!): Recipe!
+
+    deleteRecipe(_id: ID!): Recipe!
+
+    editRecipe(
+      _id: ID!
+      name: String
+      category: String
+      description: String
+      instructions: String
+    ): Recipe!
 
     signupUser(username: String!, email: String!, password: String!): Token
   }
