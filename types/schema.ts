@@ -40,7 +40,7 @@ export default gql`
 
     getRecipe(_id: ID!): Recipe!
 
-    deleteRecipe(_id: ID!): Recipe!
+    deleteRecipe(_id: ID!): Boolean!
 
     editRecipe(
       _id: ID!
@@ -51,5 +51,6 @@ export default gql`
     ): Recipe!
 
     signupUser(username: String!, email: String!, password: String!): Token
+    loginUser(email: String!, password: String!): User
   }
 `;

@@ -4,7 +4,7 @@ import { IRecipeErrors } from '../interfaces/recipeErrors.interface';
 import { isEmpty } from './isEmpty';
 
 export const validateRecipe = (recipe: IRecipe) => {
-  let errors: IRecipeErrors = {};
+  const errors: IRecipeErrors = {};
 
   recipe.name = !isEmpty(recipe.name) ? recipe.name : '';
   recipe.description = !isEmpty(recipe.description) ? recipe.description : '';

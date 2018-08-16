@@ -1,9 +1,12 @@
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
+
 import { SECRET } from '../config/keys';
 import { UserInputError } from 'apollo-server-express';
 
 import { validateRegister } from '../validation/register';
 import { validateRecipe } from '../validation/recipe';
+import { validateLogin } from '../validation/login';
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user;
@@ -59,19 +62,48 @@ export const resolvers = {
       }
 
       const { username, email, password } = args;
+
       const user = await User.findOne({ username });
 
       if (user) {
         errors.email = 'User already exists';
         throw new UserInputError('Validation Error', errors);
       } else {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const newUser = await new User({
           username,
           email,
-          password
+          hashedPassword
         }).save();
         return { token: createToken(newUser, SECRET, 3600) };
       }
     }
+
+    // loginUser: async (root, args, { User }) => {
+    //   const { errors, isValid } = await validateLogin(args);
+
+    //   if (!isValid) {
+    //     throw new UserInputError('Validation Error', errors);
+    //   }
+
+    //   const { email, password } = args;
+
+    //   const user = await User.findOne({ email });
+
+    //   if (!user) {
+    //     errors.email = 'User does not exist';
+    //     throw new UserInputError('Validation Error', errors);
+    //   }
+
+    //   const valid = await bcrypt.compare(password, user.password);
+
+    //   if (!valid) {
+    //     errors.password = 'Password is incorrect'
+    //     throw new UserInputError('Validation Error', errors);
+    //   } else {
+    //     return { token: createToken({ email }, SECRET, 3600) };
+    //   }
+    // }
   }
 };
