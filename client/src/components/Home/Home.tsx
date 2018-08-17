@@ -1,46 +1,37 @@
 import * as React from 'react';
-
-// import { GetAllRecipesQuery } from '../schemaTypes/schemaTypes';
 import { getAllRecipes } from '../../queries';
 
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 
-import Register from '../Register/Register';
+// import Register from '../Register/Register';
 
-import { ChildProps } from 'react-apollo';
+// import { ChildProps } from 'react-apollo';
 
-import { IRecipe } from '../../interfaces/Recipe/recipe.interface';
+// import { IRecipe } from '../../interfaces/Recipe/recipe.interface';
 
-class Home extends React.Component<ChildProps<any, any>> {
+class Home extends React.Component {
   public render() {
-    console.log(this.props);
+    return (
+      <>
+        <h1>Home</h1>
+        <Query query={getAllRecipes}>
+          {({ data, loading, error }) => {
+            if (loading) {
+              return null;
+            }
 
-    let homeData;
+            if (error) {
+              return <div>{error}</div>;
+            }
 
-    if (this.props.data.loading) {
-      homeData = <div>Loading...</div>;
-    } else {
-      console.log(this.props.data.getAllRecipes);
-      this.props.data.getAllRecipes.map((recipe: IRecipe) => {
-        homeData = (
-          <div>
-            <h1 onClick={() => console.log(this.props)}>Home</h1>
-            <Register />
-            <React.Fragment key={recipe._id}>
-              <div
-                onClick={() => this.props.history.push(`/recipe/${recipe._id}`)}
-              >
-                {recipe._id}
-              </div>
-              <div style={{ textAlign: 'center' }}>{recipe.name}</div>
-            </React.Fragment>
-          </div>
-        );
-      });
-    }
+            console.log(data);
 
-    return homeData;
+            return <p>Recipes</p>;
+          }}
+        </Query>
+      </>
+    );
   }
 }
 
-export default graphql<{}, any>(getAllRecipes)(Home);
+export default Home;

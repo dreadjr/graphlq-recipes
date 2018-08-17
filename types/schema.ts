@@ -26,7 +26,8 @@ export default gql`
   }
 
   type Query {
-    getAllRecipes: [Recipe!]
+    getAllRecipes: [Recipe!]!
+    getCurrentUser: User
   }
 
   type Mutation {
@@ -50,7 +51,13 @@ export default gql`
       instructions: String
     ): Recipe!
 
-    signupUser(username: String!, email: String!, password: String!): Token
-    loginUser(email: String!, password: String!): User
+    registerUser(
+      username: String!
+      email: String!
+      password: String!
+      confirmPassword: String!
+    ): Token
+
+    loginUser(email: String!, password: String!): Token
   }
 `;

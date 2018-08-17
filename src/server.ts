@@ -3,8 +3,7 @@ import * as express from 'express';
 import * as mongoose from 'mongoose';
 
 import * as cors from 'cors';
-
-// const test = require('../config/test');
+import * as jwt from 'jsonwebtoken';
 
 import { ApolloServer, gql } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
@@ -15,18 +14,9 @@ import typeDefs from '../types/schema';
 import User from '../models/User';
 import Recipe from '../models/Recipe';
 
-import { MONGO_URI } from '../config/keys';
+import { MONGO_URI, SECRET } from '../config/keys';
 
 const port = process.env.PORT || 4000;
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: {
-    User,
-    Recipe
-  }
-});
 
 mongoose
   .connect(
@@ -44,10 +34,40 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+interface IExpressRequest extends express.Request {
+  currentUser: any;
+}
+
+app.use(async (req: IExpressRequest, res, next) => {
+  const token = req.headers['authorization'];
+  if (token !== 'null') {
+    try {
+      const currentUser = await jwt.verify(token, SECRET);
+      req.currentUser = currentUser;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  next();
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    return {
+      User,
+      Recipe,
+      currentUser: req.currentUser
+    };
+  }
+});
+
 server.applyMiddleware({ app });
+
 app.listen(port, () =>
   console.log(`Server listening at localhost:${port}${server.graphqlPath}`)
 );

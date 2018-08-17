@@ -16,7 +16,16 @@ const createToken = (user, secret, expiresIn) => {
 
 export const resolvers = {
   Query: {
-    getAllRecipes: async (root, {}, { Recipe }) => await Recipe.find()
+    getAllRecipes: async (root, {}, { Recipe }) => await Recipe.find(),
+    getCurrentUser: async (root, {}, { currentUser, User }) => {
+      if (!currentUser) {
+        return null;
+      }
+
+      return await User.findOne({
+        email: currentUser.email
+      }).populate({ path: 'favorites', model: 'Recipe' });
+    }
   },
   Mutation: {
     addRecipe: async (root, args, { Recipe }) => {
@@ -54,56 +63,57 @@ export const resolvers = {
         { new: true }
       ),
 
-    signupUser: async (root, args, { User }) => {
+    registerUser: async (root, args, { User }) => {
       const { errors, isValid } = await validateRegister(args);
 
       if (!isValid) {
         throw new UserInputError('Validation Error', errors);
       }
 
-      const { username, email, password } = args;
+      const { username, email, password, confirmPassword } = args;
 
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ email });
 
       if (user) {
-        errors.email = 'User already exists';
+        errors.email = 'Email already exists';
         throw new UserInputError('Validation Error', errors);
       } else {
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = await new User({
           username,
           email,
-          hashedPassword
+          password: hashedPassword
         }).save();
         return { token: createToken(newUser, SECRET, 3600) };
       }
+    },
+
+    loginUser: async (root, args, { User }) => {
+      const { errors, isValid } = await validateLogin(args);
+
+      if (!isValid) {
+        throw new UserInputError('Validation Error', errors);
+      }
+
+      const { email, password } = args;
+
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        errors.email = 'User does not exist';
+        throw new UserInputError('Validation Error', errors);
+      }
+
+      const validPassword = await bcrypt.compare(password, user.password);
+
+      if (!validPassword) {
+        errors.password = 'Password is incorrect';
+        throw new UserInputError('Validation Error', errors);
+      } else {
+        return { token: createToken(user, SECRET, 3600) };
+      }
     }
-
-    // loginUser: async (root, args, { User }) => {
-    //   const { errors, isValid } = await validateLogin(args);
-
-    //   if (!isValid) {
-    //     throw new UserInputError('Validation Error', errors);
-    //   }
-
-    //   const { email, password } = args;
-
-    //   const user = await User.findOne({ email });
-
-    //   if (!user) {
-    //     errors.email = 'User does not exist';
-    //     throw new UserInputError('Validation Error', errors);
-    //   }
-
-    //   const valid = await bcrypt.compare(password, user.password);
-
-    //   if (!valid) {
-    //     errors.password = 'Password is incorrect'
-    //     throw new UserInputError('Validation Error', errors);
-    //   } else {
-    //     return { token: createToken({ email }, SECRET, 3600) };
-    //   }
-    // }
   }
 };

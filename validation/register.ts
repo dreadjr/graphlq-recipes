@@ -9,6 +9,9 @@ export const validateRegister = (data: IUser) => {
   data.username = !isEmpty(data.username) ? data.username : '';
   data.email = !isEmpty(data.email) ? data.email : '';
   data.password = !isEmpty(data.password) ? data.password : '';
+  data.confirmPassword = !isEmpty(data.confirmPassword)
+    ? data.confirmPassword
+    : '';
 
   if (!Validator.isLength(data.username, { min: 2, max: 30 })) {
     errors.username = 'Name must be between 2 and 30 characters';
@@ -32,6 +35,14 @@ export const validateRegister = (data: IUser) => {
 
   if (Validator.isEmpty(data.password)) {
     errors.password = 'Password field is required';
+  }
+
+  if (!Validator.equals(data.password, data.confirmPassword)) {
+    errors.confirmPassword = 'Passwords must match';
+  }
+
+  if (Validator.isEmpty(data.confirmPassword)) {
+    errors.confirmPassword = 'Confirm Password is required';
   }
 
   return { errors, isValid: isEmpty(errors) };
