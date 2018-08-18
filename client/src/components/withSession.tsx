@@ -11,9 +11,7 @@ export const withSession = (Component: any) => (props: any) => (
         return null;
       }
 
-      console.log(data);
-
-      return <Component {...props} refetch={refetch} />;
+      return <Component {...props} refetch={refetch} session={data} />;
     }}
   </Query>
 );

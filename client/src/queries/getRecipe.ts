@@ -1,12 +1,12 @@
 import { gql } from 'apollo-boost';
 
 export default gql`
-  query GetRecipe($id: String!) {
-    getRecipe(id: $id) {
+  query GetRecipe($_id: ID!) {
+    getRecipe(_id: $_id) {
       _id
       name
-      description
       category
+      description
       instructions
       likes
       createdDate

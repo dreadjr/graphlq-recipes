@@ -1,4 +1,5 @@
 import { History } from 'history';
+import { RouteComponentProps } from 'react-router-dom';
 
 interface LoginInputErrors {
   errors?: {
@@ -13,7 +14,7 @@ interface LoginInputValues {
 
 export type LoginState = LoginInputValues & LoginInputErrors;
 
-export interface LoginProps {
-  history?: History;
+export interface LoginProps extends RouteComponentProps<any> {
+  history: History;
   refetch: any;
 }

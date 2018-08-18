@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Input from '../Input/Input';
 import { REGISTER_USER } from '../../mutations';
 import { Mutation } from 'react-apollo';
 import {
@@ -8,10 +7,16 @@ import {
 } from '../../interfaces/Register/register.interface';
 import { isEmpty } from '../../utils/isEmpty';
 
-export default class Register extends React.Component<
-  RegisterProps,
-  RegisterState
-> {
+import { withRouter, Link } from 'react-router-dom';
+
+import ThemeWrapper from '../StyledComponents/MaterialUI/Theme';
+import { TextField, Typography } from '@material-ui/core';
+import { FormContainer } from '../StyledComponents/Form/FormContainer';
+import { FormButton } from '../StyledComponents/Button/Button';
+
+import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
+
+class Register extends React.Component<RegisterProps, RegisterState> {
   public state: RegisterState = {
     email: '',
     username: '',
@@ -36,8 +41,8 @@ export default class Register extends React.Component<
     event.preventDefault();
     try {
       await registerUser();
-      this.props.history!.push('/login');
       this.setState({ errors: {} });
+      this.props.history.push('/login');
     } catch (error) {
       const {
         graphQLErrors: [
@@ -60,59 +65,93 @@ export default class Register extends React.Component<
     const { email, username, password, confirmPassword, errors } = this.state;
 
     return (
-      <div>
-        <h2>Register</h2>
+      <>
         <Mutation
           mutation={REGISTER_USER}
           variables={{ email, username, password, confirmPassword }}
         >
           {(registerUser, { loading }) => {
             return (
-              <form
-                onSubmit={event => this.onSubmitHandler(event, registerUser)}
-              >
-                <Input
-                  placeholder={'Email'}
-                  value={email}
-                  name="email"
-                  onChange={this.onChangeHandler}
-                />
-                <Input
-                  placeholder={'Username'}
-                  value={username}
-                  name="username"
-                  onChange={this.onChangeHandler}
-                />
-                <Input
-                  placeholder={'Password'}
-                  value={password}
-                  name="password"
-                  onChange={this.onChangeHandler}
-                  type="password"
-                />
-                <Input
-                  placeholder={'Confirm Password'}
-                  value={confirmPassword}
-                  name="confirmPassword"
-                  onChange={this.onChangeHandler}
-                  type="password"
-                />
-                <button type="submit" disabled={loading || this.validateForm()}>
-                  Submit
-                </button>
-              </form>
+              <ComponentWrapper>
+                <FormContainer
+                  onSubmit={event => this.onSubmitHandler(event, registerUser)}
+                >
+                  <ThemeWrapper>
+                    <Typography variant="display3">Recipe Book</Typography>
+                    <TextField
+                      error={!!errors!.username}
+                      label={errors!.username ? errors!.username : 'Username'}
+                      value={username}
+                      margin="normal"
+                      name="username"
+                      onChange={this.onChangeHandler}
+                    />
+                    <TextField
+                      error={!!errors!.email}
+                      label={errors!.email ? errors!.email : 'Email'}
+                      value={email}
+                      margin="normal"
+                      name="email"
+                      onChange={this.onChangeHandler}
+                    />
+                    <TextField
+                      type="password"
+                      error={!!errors!.password}
+                      label={errors!.password ? errors!.password : 'Password'}
+                      value={password}
+                      margin="normal"
+                      name="password"
+                      onChange={this.onChangeHandler}
+                    />
+                    <TextField
+                      type="password"
+                      error={!!errors!.confirmPassword}
+                      label={
+                        errors!.confirmPassword
+                          ? errors!.confirmPassword
+                          : 'Confirm Password'
+                      }
+                      value={confirmPassword}
+                      margin="normal"
+                      name="confirmPassword"
+                      onChange={this.onChangeHandler}
+                    />
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        flexDirection: 'column',
+                        width: '30rem'
+                      }}
+                    >
+                      <FormButton
+                        variant="contained"
+                        color="primary"
+                        wide={true.toString()}
+                        type="submit"
+                        disabled={this.validateForm()}
+                      >
+                        Register
+                      </FormButton>
+                      <Link to="/login">
+                        <FormButton
+                          variant="contained"
+                          color="primary"
+                          wide={true.toString()}
+                        >
+                          Or Login
+                        </FormButton>
+                      </Link>
+                    </div>
+                  </ThemeWrapper>
+                </FormContainer>
+              </ComponentWrapper>
             );
           }}
         </Mutation>
-        {errors ? (
-          <>
-            <div>{errors.email}</div>
-            <div>{errors.username}</div>
-            <div>{errors.password}</div>
-            <div>{errors.confirmPassword}</div>
-          </>
-        ) : null}
-      </div>
+      </>
     );
   }
 }
+
+export default withRouter(Register);

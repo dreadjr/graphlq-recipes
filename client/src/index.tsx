@@ -11,6 +11,11 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
+import Navbar from './components/Navigation/Navbar';
+import Search from './components/Recipe/Search';
+import AddRecipe from './components/Recipe/AddRecipe';
+import RecipePage from './components/Recipe/RecipePage';
+import { Profile } from './components/Profile/Profile';
 
 import { withSession } from './components/withSession';
 
@@ -38,11 +43,13 @@ const client = new ApolloClient({
   }
 });
 
-const Root = ({ refetch }: any) => (
+const Root = ({ refetch, session }: any) => (
   <BrowserRouter>
     <div>
+      <Navbar session={session} />
       <Switch>
         <Route exact={true} path="/" component={Home} />
+        <Route exact={true} path="/search" component={Search} />
         <Route
           exact={true}
           path="/register"
@@ -53,6 +60,9 @@ const Root = ({ refetch }: any) => (
           path="/login"
           render={() => <Login refetch={refetch} />}
         />
+        <Route exact={true} path="/recipe/add" component={AddRecipe} />
+        <Route exact={true} path="/recipes/:_id" component={RecipePage} />
+        <Route exact={true} path="/profile" component={Profile} />
         <Redirect to="/" />
       </Switch>
     </div>

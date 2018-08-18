@@ -25,7 +25,9 @@ export const resolvers = {
       return await User.findOne({
         email: currentUser.email
       }).populate({ path: 'favorites', model: 'Recipe' });
-    }
+    },
+    getRecipe: async (root, { _id }, { Recipe }) =>
+      await Recipe.findOne({ _id })
   },
   Mutation: {
     addRecipe: async (root, args, { Recipe }) => {
@@ -86,7 +88,7 @@ export const resolvers = {
           email,
           password: hashedPassword
         }).save();
-        return { token: createToken(newUser, SECRET, 3600) };
+        return { token: createToken(newUser, SECRET, '1hr') };
       }
     },
 
@@ -112,7 +114,7 @@ export const resolvers = {
         errors.password = 'Password is incorrect';
         throw new UserInputError('Validation Error', errors);
       } else {
-        return { token: createToken(user, SECRET, 3600) };
+        return { token: createToken(user, SECRET, '1hr') };
       }
     }
   }

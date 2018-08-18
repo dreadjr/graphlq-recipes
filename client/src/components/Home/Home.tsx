@@ -3,11 +3,13 @@ import { getAllRecipes } from '../../queries';
 
 import { Query } from 'react-apollo';
 
-// import Register from '../Register/Register';
+import RecipeItem from '../Recipe/RecipeItem';
 
-// import { ChildProps } from 'react-apollo';
+// import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-// import { IRecipe } from '../../interfaces/Recipe/recipe.interface';
+// interface HomeProps extends RouteComponentProps<any> {
+
+// }
 
 class Home extends React.Component {
   public render() {
@@ -24,9 +26,13 @@ class Home extends React.Component {
               return <div>{error}</div>;
             }
 
-            console.log(data);
-
-            return <p>Recipes</p>;
+            return (
+              <ul>
+                {data.getAllRecipes.map((recipe: any) => (
+                  <RecipeItem key={recipe._id} {...recipe} />
+                ))}
+              </ul>
+            );
           }}
         </Query>
       </>

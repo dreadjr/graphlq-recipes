@@ -1,4 +1,4 @@
-import { History } from 'history';
+import { RouteComponentProps } from 'react-router-dom';
 
 interface RegisterInputErrors {
   errors?: {
@@ -15,7 +15,7 @@ interface RegisterInputValues {
 
 export type RegisterState = RegisterInputValues & RegisterInputErrors;
 
-export interface RegisterProps {
-  history?: History;
+export interface RegisterProps extends RouteComponentProps<any> {
+  history: any;
   refetch: any;
 }

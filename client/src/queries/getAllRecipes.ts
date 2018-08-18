@@ -5,11 +5,7 @@ export default gql`
     getAllRecipes {
       _id
       name
-      description
       category
-      instructions
-      likes
-      createdDate
     }
   }
 `;

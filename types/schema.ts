@@ -16,8 +16,8 @@ export default gql`
     category: String!
     description: String!
     instructions: String!
-    createdDate: String
     likes: Int
+    createdDate: String
     username: String
   }
 
@@ -26,8 +26,9 @@ export default gql`
   }
 
   type Query {
-    getAllRecipes: [Recipe!]!
     getCurrentUser: User
+    getAllRecipes: [Recipe!]
+    getRecipe(_id: ID!): Recipe
   }
 
   type Mutation {
