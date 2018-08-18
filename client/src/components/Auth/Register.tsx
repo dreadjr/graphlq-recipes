@@ -1,20 +1,12 @@
 import * as React from 'react';
 import Input from '../Input/Input';
-
 import { REGISTER_USER } from '../../mutations';
-
 import { Mutation } from 'react-apollo';
-
-import { RegisterState } from '../../interfaces/Register/register.interface';
-
+import {
+  RegisterState,
+  RegisterProps
+} from '../../interfaces/Register/register.interface';
 import { isEmpty } from '../../utils/isEmpty';
-
-import { History } from 'history';
-
-interface RegisterProps {
-  history?: History;
-  refetch: any;
-}
 
 export default class Register extends React.Component<
   RegisterProps,

@@ -1,20 +1,9 @@
 import * as React from 'react';
 import Input from '../Input/Input';
-
 import { LOGIN_USER } from '../../mutations';
-
 import { Mutation } from 'react-apollo';
-
-import { LoginState } from '../../interfaces/Login/login.interface';
-
+import { LoginState, LoginProps } from '../../interfaces/Login/login.interface';
 import { isEmpty } from '../../utils/isEmpty';
-
-import { History } from 'history';
-
-interface LoginProps {
-  history?: History;
-  refetch: any;
-}
 
 export default class Login extends React.Component<LoginProps, LoginState> {
   public state: LoginState = {

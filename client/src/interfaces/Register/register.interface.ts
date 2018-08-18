@@ -1,3 +1,5 @@
+import { History } from 'history';
+
 interface RegisterInputErrors {
   errors?: {
     [key: string]: RegisterInputValues;
@@ -14,5 +16,6 @@ interface RegisterInputValues {
 export type RegisterState = RegisterInputValues & RegisterInputErrors;
 
 export interface RegisterProps {
-  mutate: (variables: any) => any;
+  history?: History;
+  refetch: any;
 }
