@@ -1,42 +1,49 @@
 import * as React from 'react';
 
+import { isEmpty } from '../../utils/isEmpty';
+
 import ThemeWrapper from '../StyledComponents/MaterialUI/Theme';
-import {
-  TextField,
-  Typography,
-  InputLabel,
-  Select,
-  MenuItem
-} from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 import { FormContainer } from '../StyledComponents/Form/FormContainer';
+
 import { FormButton } from '../StyledComponents/Button/Button';
 
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
 
+import CategoryPicker from './CategoryPicker';
+
+import { withRouter } from 'react-router-dom';
+
 import {
   AddRecipeState,
+  AddRecipeProps,
   AddRecipeData,
   AddRecipeVariables
 } from '../../interfaces/Recipe/recipe.interface';
 
-import Toggle from '../Toggle/Toggle';
-
 import { Mutation } from 'react-apollo';
-import { ADD_RECIPE } from '../../mutations';
 
-class AddRecipe extends React.Component<{}, AddRecipeState> {
+import { InMemoryCache } from 'apollo-boost';
+
+import { ADD_RECIPE } from '../../mutations';
+import { getAllRecipes } from '../../queries';
+
+class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
   public state: AddRecipeState = {
     name: '',
     description: '',
     instructions: '',
-    category: '',
+    category: 'Breakfast',
+    username: '',
     errors: {}
   };
 
-  public onChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = event.currentTarget;
+  public componentDidMount() {
+    this.setState({ username: this.props.session.getCurrentUser.username });
+  }
+
+  public onChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
 
     this.setState({
       ...this.state,
@@ -44,24 +51,84 @@ class AddRecipe extends React.Component<{}, AddRecipeState> {
     });
   };
 
+  public onSubmitHandler = async (
+    event: React.FormEvent<HTMLFormElement>,
+    addRecipe: any
+  ) => {
+    event.preventDefault();
+
+    try {
+      await addRecipe();
+      this.setState({ errors: {} });
+      this.props.history.push('/');
+    } catch (error) {
+      console.log(error);
+      const {
+        graphQLErrors: [
+          {
+            extensions: { exception: errors }
+          }
+        ]
+      } = error;
+
+      this.setState({ errors });
+    }
+  };
+
+  public validateForm = () => {
+    const { name, description, instructions } = this.state;
+    return isEmpty(name || description || instructions);
+  };
+
+  public updateCache = (cache: InMemoryCache, { data: { addRecipe } }: any) => {
+    cache.readQuery({ query: getAllRecipes });
+
+    cache.writeQuery({
+      query: getAllRecipes,
+      data: {
+        data: {
+          getAllRecipes: [addRecipe, ...getAllRecipes]
+        }
+      }
+    });
+  };
+
   public render() {
-    const { name, description, instructions, category, errors } = this.state;
+    const {
+      name,
+      description,
+      instructions,
+      category,
+      username,
+      errors
+    } = this.state;
 
     return (
       <Mutation<AddRecipeData, AddRecipeVariables>
         mutation={ADD_RECIPE}
-        variables={{ name, description, instructions, category }}
+        variables={{ name, description, instructions, category, username }}
+        update={this.updateCache}
       >
-        {({ loading }: any) => {
+        {(addRecipe, { data, loading, error }: any) => {
           if (loading) {
             return null;
           }
 
+          if (error) {
+            return error;
+          }
+
           return (
             <ComponentWrapper>
-              <FormContainer onSubmit={event => console.log(event)}>
+              <FormContainer
+                onSubmit={event => this.onSubmitHandler(event, addRecipe)}
+              >
                 <ThemeWrapper>
-                  <Typography variant="display3">Recipe Book</Typography>
+                  <Typography variant="display3">Add A Recipe</Typography>
+                  <CategoryPicker
+                    onChange={this.onChangeHandler}
+                    value={category}
+                  />
                   <TextField
                     error={!!errors!.name}
                     label={errors!.name ? errors!.name : 'Name'}
@@ -71,7 +138,6 @@ class AddRecipe extends React.Component<{}, AddRecipeState> {
                     onChange={this.onChangeHandler}
                   />
                   <TextField
-                    type="description"
                     error={!!errors!.description}
                     label={
                       errors!.description ? errors!.description : 'Description'
@@ -82,46 +148,21 @@ class AddRecipe extends React.Component<{}, AddRecipeState> {
                     onChange={this.onChangeHandler}
                   />
                   <TextField
-                    type="instructions"
                     error={!!errors!.instructions}
                     label={
                       errors!.instructions
                         ? errors!.instructions
                         : 'Instructions'
                     }
+                    multiline={true}
+                    rows={2}
+                    rowsMax={4}
                     value={instructions}
                     margin="normal"
                     name="instructions"
                     onChange={this.onChangeHandler}
                   />
-                  <InputLabel htmlFor="demo-controlled-open-select">
-                    Category
-                  </InputLabel>
-                  <Toggle>
-                    {({ on, onToggle }) => {
-                      return (
-                        <Select
-                          onClose={onToggle}
-                          onOpen={onToggle}
-                          open={on}
-                          value={category}
-                          name="category"
-                          onChange={this.onChangeHandler}
-                          inputProps={{
-                            name: 'age',
-                            id: 'demo-controlled-open-select'
-                          }}
-                        >
-                          <MenuItem value="">
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value={'Breakfast'}>Breakfast</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                      );
-                    }}
-                  </Toggle>
+
                   <div
                     style={{
                       display: 'flex',
@@ -134,10 +175,10 @@ class AddRecipe extends React.Component<{}, AddRecipeState> {
                       variant="contained"
                       color="primary"
                       wide={true.toString()}
-                      onClick={() => console.log(this.props)}
                       type="submit"
+                      disabled={this.validateForm()}
                     >
-                      Add Recipe
+                      Submit
                     </FormButton>
                   </div>
                 </ThemeWrapper>
@@ -150,4 +191,4 @@ class AddRecipe extends React.Component<{}, AddRecipeState> {
   }
 }
 
-export default AddRecipe;
+export default withRouter(AddRecipe);

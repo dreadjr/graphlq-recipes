@@ -16,7 +16,9 @@ const createToken = (user, secret, expiresIn) => {
 
 export const resolvers = {
   Query: {
-    getAllRecipes: async (root, {}, { Recipe }) => await Recipe.find(),
+    getAllRecipes: async (root, {}, { Recipe }) =>
+      await Recipe.find().sort({ createdDate: 'DESC' }),
+
     getCurrentUser: async (root, {}, { currentUser, User }) => {
       if (!currentUser) {
         return null;
@@ -37,13 +39,14 @@ export const resolvers = {
         throw new UserInputError('Validation Error', errors);
       }
 
-      const { name, description, category, instructions } = args;
+      const { name, description, category, instructions, username } = args;
 
       const newRecipe = await new Recipe({
         name,
         description,
         category,
-        instructions
+        instructions,
+        username
       }).save();
       return newRecipe;
     },

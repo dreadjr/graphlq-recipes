@@ -1,3 +1,5 @@
+import { RouteComponentProps } from 'react-router-dom';
+
 export interface IRecipe {
   _id: string;
   name: string;
@@ -20,9 +22,14 @@ interface AddRecipeInputValues {
   description: string;
   instructions: string;
   category: string;
+  username: string;
 }
 
 export type AddRecipeState = AddRecipeInputValues & AddRecipeInputErrors;
+
+export interface AddRecipeProps extends RouteComponentProps<any> {
+  session: any;
+}
 
 export interface GetAllRecipeData {
   getAllRecipes: [
@@ -55,6 +62,13 @@ export interface AddRecipeData {
   description: string;
   category: string;
   instructions: string;
+  username?: string;
 }
 
-export interface AddRecipeVariables extends AddRecipeData {}
+export interface AddRecipeVariables {
+  name: string;
+  description: string;
+  category: string;
+  instructions: string;
+  username?: string;
+}

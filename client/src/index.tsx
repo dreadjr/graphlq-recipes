@@ -60,8 +60,12 @@ const Root = ({ refetch, session }: any) => (
           path="/login"
           render={() => <Login refetch={refetch} />}
         />
-        <Route exact={true} path="/recipe/add" component={AddRecipe} />
-        <Route exact={true} path="/recipes/:_id" component={RecipePage} />
+        <Route
+          exact={true}
+          path="/recipe/add"
+          render={() => <AddRecipe session={session} />}
+        />
+        <Route exact={true} path="/recipe/:_id" component={RecipePage} />
         <Route exact={true} path="/profile" component={Profile} />
         <Redirect to="/" />
       </Switch>
