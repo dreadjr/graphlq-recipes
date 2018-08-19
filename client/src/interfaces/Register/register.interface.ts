@@ -1,4 +1,5 @@
 import { RouteComponentProps } from 'react-router-dom';
+import { RefetchQueriesProviderFn } from 'react-apollo';
 
 interface RegisterInputErrors {
   errors?: {
@@ -16,6 +17,16 @@ interface RegisterInputValues {
 export type RegisterState = RegisterInputValues & RegisterInputErrors;
 
 export interface RegisterProps extends RouteComponentProps<any> {
-  history: any;
-  refetch: any;
+  refetch: RefetchQueriesProviderFn;
+}
+
+export interface RegisterData {
+  token: string;
+}
+
+export interface RegisterVariables {
+  email: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
 }

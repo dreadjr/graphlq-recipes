@@ -10,14 +10,20 @@ import { Button } from '@material-ui/core';
 
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
 
+import {
+  GetRecipeData,
+  GetRecipeVariables
+} from '../../interfaces/Recipe/recipe.interface';
+
 const RecipePage = (props: RouteComponentProps<any>) => (
-  <Query query={getRecipe} variables={{ _id: props.match.params._id }}>
+  <Query<GetRecipeData, GetRecipeVariables>
+    query={getRecipe}
+    variables={{ _id: props.match.params._id }}
+  >
     {({ loading, data }) => {
-      if (loading) {
+      if (loading || !data) {
         return null;
       }
-
-      console.log(data);
 
       const { getRecipe } = data;
 

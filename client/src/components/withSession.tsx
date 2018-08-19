@@ -4,10 +4,16 @@ import { Query } from 'react-apollo';
 
 import { getCurrentUser } from '../queries';
 
+interface GetCurrentUserData {
+  username: string;
+  email: string;
+  joinDate: string;
+}
+
 export const withSession = (Component: any) => (props: any) => (
-  <Query query={getCurrentUser}>
+  <Query<GetCurrentUserData, {}> query={getCurrentUser}>
     {({ data, loading, refetch }) => {
-      if (loading) {
+      if (loading || !data) {
         return null;
       }
 

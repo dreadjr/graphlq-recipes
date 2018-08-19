@@ -1,5 +1,5 @@
-import { History } from 'history';
 import { RouteComponentProps } from 'react-router-dom';
+import { RefetchQueriesProviderFn } from 'react-apollo';
 
 interface LoginInputErrors {
   errors?: {
@@ -15,6 +15,14 @@ interface LoginInputValues {
 export type LoginState = LoginInputValues & LoginInputErrors;
 
 export interface LoginProps extends RouteComponentProps<any> {
-  history: History;
-  refetch: any;
+  refetch: RefetchQueriesProviderFn;
+}
+
+export interface LoginData {
+  token: string;
+}
+
+export interface LoginVariables {
+  email: string;
+  password: string;
 }

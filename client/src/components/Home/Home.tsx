@@ -5,20 +5,19 @@ import { Query } from 'react-apollo';
 
 import RecipeItem from '../Recipe/RecipeItem';
 
-// import { withRouter, RouteComponentProps } from 'react-router-dom';
-
-// interface HomeProps extends RouteComponentProps<any> {
-
-// }
+import {
+  IRecipe,
+  GetAllRecipeData
+} from '../../interfaces/Recipe/recipe.interface';
 
 class Home extends React.Component {
   public render() {
     return (
       <>
         <h1>Home</h1>
-        <Query query={getAllRecipes}>
+        <Query<GetAllRecipeData, {}> query={getAllRecipes}>
           {({ data, loading, error }) => {
-            if (loading) {
+            if (loading || !data) {
               return null;
             }
 
@@ -28,7 +27,7 @@ class Home extends React.Component {
 
             return (
               <ul>
-                {data.getAllRecipes.map((recipe: any) => (
+                {data.getAllRecipes.map((recipe: IRecipe) => (
                   <RecipeItem key={recipe._id} {...recipe} />
                 ))}
               </ul>

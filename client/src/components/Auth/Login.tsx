@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { LOGIN_USER } from '../../mutations';
 import { Mutation } from 'react-apollo';
-import { LoginState, LoginProps } from '../../interfaces/Login/login.interface';
+import {
+  LoginState,
+  LoginProps,
+  LoginData,
+  LoginVariables
+} from '../../interfaces/Login/login.interface';
 import { isEmpty } from '../../utils/isEmpty';
 
 import { Link, withRouter } from 'react-router-dom';
@@ -64,7 +69,10 @@ class Login extends React.Component<LoginProps, LoginState> {
 
     return (
       <>
-        <Mutation mutation={LOGIN_USER} variables={{ email, password }}>
+        <Mutation<LoginData, LoginVariables>
+          mutation={LOGIN_USER}
+          variables={{ email, password }}
+        >
           {(loginUser, { loading }) => {
             return (
               <ComponentWrapper>

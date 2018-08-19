@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-boost';
 
 export const ADD_RECIPE = gql`
   mutation AddRecipe($name: String!, $description: String!, $category: String!, $instructions: String! ) {

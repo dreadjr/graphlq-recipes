@@ -13,7 +13,11 @@ import { FormButton } from '../StyledComponents/Button/Button';
 
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
 
-import { AddRecipeState } from '../../interfaces/Recipe/recipe.interface';
+import {
+  AddRecipeState,
+  AddRecipeData,
+  AddRecipeVariables
+} from '../../interfaces/Recipe/recipe.interface';
 
 import Toggle from '../Toggle/Toggle';
 
@@ -44,7 +48,7 @@ class AddRecipe extends React.Component<{}, AddRecipeState> {
     const { name, description, instructions, category, errors } = this.state;
 
     return (
-      <Mutation
+      <Mutation<AddRecipeData, AddRecipeVariables>
         mutation={ADD_RECIPE}
         variables={{ name, description, instructions, category }}
       >

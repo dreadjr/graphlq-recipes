@@ -3,7 +3,9 @@ import { REGISTER_USER } from '../../mutations';
 import { Mutation } from 'react-apollo';
 import {
   RegisterState,
-  RegisterProps
+  RegisterProps,
+  RegisterData,
+  RegisterVariables
 } from '../../interfaces/Register/register.interface';
 import { isEmpty } from '../../utils/isEmpty';
 
@@ -66,7 +68,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
 
     return (
       <>
-        <Mutation
+        <Mutation<RegisterData, RegisterVariables>
           mutation={REGISTER_USER}
           variables={{ email, username, password, confirmPassword }}
         >
