@@ -28,15 +28,19 @@ const RecipePage = (props: RouteComponentProps<any>) => (
       const { getRecipe } = data;
 
       return (
-        <ComponentWrapper style={{ flexDirection: 'column' }}>
-          <Typography onClick={() => console.log(props)}>
-            {getRecipe.name}
+        <ComponentWrapper
+          style={{ flexDirection: 'column', alignItems: 'center' }}
+        >
+          <Typography variant="display1">{getRecipe.name}</Typography>
+          <Typography variant="display1">
+            Category: {getRecipe.category}
           </Typography>
-          <Typography>Category: {getRecipe.category}</Typography>
-          <Typography>{getRecipe.description}</Typography>
-          <Typography>{getRecipe.instructions}</Typography>
-          <Typography>Likes: {getRecipe.likes}</Typography>
-          <Typography>Created By: {getRecipe.username}</Typography>
+          <Typography variant="display1">{getRecipe.description}</Typography>
+          <Typography variant="display1">{getRecipe.instructions}</Typography>
+          <Typography variant="display1">Likes: {getRecipe.likes}</Typography>
+          <Typography variant="display1">
+            Created By: {getRecipe.username}
+          </Typography>
           <Button>Like</Button>
         </ComponentWrapper>
       );

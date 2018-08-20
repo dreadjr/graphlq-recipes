@@ -43,7 +43,7 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
   }
 
   public onChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = event.target;
+    const { name, value } = event.currentTarget;
 
     this.setState({
       ...this.state,
@@ -81,14 +81,12 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
   };
 
   public updateCache = (cache: InMemoryCache, { data: { addRecipe } }: any) => {
-    cache.readQuery({ query: getAllRecipes });
+    const { GET_ALL_RECIPES } = cache.readQuery({ query: getAllRecipes });
 
-    cache.writeQuery({
+    return cache.writeQuery({
       query: getAllRecipes,
       data: {
-        data: {
-          getAllRecipes: [addRecipe, ...getAllRecipes]
-        }
+        GET_ALL_RECIPES: [addRecipe, ...GET_ALL_RECIPES]
       }
     });
   };
@@ -121,7 +119,9 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
           return (
             <ComponentWrapper>
               <FormContainer
-                onSubmit={event => this.onSubmitHandler(event, addRecipe)}
+                onSubmit={(event: React.FormEvent<HTMLFormElement>) =>
+                  this.onSubmitHandler(event, addRecipe)
+                }
               >
                 <ThemeWrapper>
                   <Typography variant="display3">Add A Recipe</Typography>

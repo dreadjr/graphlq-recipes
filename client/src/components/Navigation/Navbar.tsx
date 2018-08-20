@@ -14,7 +14,9 @@ import Logout from '../Auth/Logout';
 
 import { NavBarProps } from '../../interfaces/Navigation/navbar.interface';
 
-const navBar = (props: NavBarProps) => {
+import { withRouter } from 'react-router-dom';
+
+const NavBar = (props: NavBarProps) => {
   const { session } = props;
 
   let authButtons;
@@ -69,8 +71,8 @@ const navBar = (props: NavBarProps) => {
               <Typography
                 variant="title"
                 color="inherit"
-                style={{ fontSize: '1.3rem !important' }}
-                onClick={() => console.log(props)}
+                style={{ fontSize: '1.3rem !important', cursor: 'pointer' }}
+                onClick={() => props.history.push('/')}
               >
                 React Recipes
               </Typography>
@@ -91,4 +93,4 @@ const navBar = (props: NavBarProps) => {
   );
 };
 
-export default navBar;
+export default withRouter(NavBar);

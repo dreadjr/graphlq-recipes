@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { Operation } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
@@ -24,7 +24,7 @@ const client = new ApolloClient({
   fetchOptions: {
     credentials: 'include'
   },
-  request: (operation): any => {
+  request: (operation: Operation): any => {
     const token = localStorage.getItem('jwtToken');
     operation.setContext({
       headers: {
@@ -32,7 +32,7 @@ const client = new ApolloClient({
       }
     });
   },
-  onError: ({ networkError }: any) => {
+  onError: ({ networkError }) => {
     if (networkError) {
       console.log('[Network Error]', networkError);
 
@@ -45,7 +45,7 @@ const client = new ApolloClient({
 
 const Root = ({ refetch, session }: any) => (
   <BrowserRouter>
-    <div>
+    <>
       <Navbar session={session} />
       <Switch>
         <Route exact={true} path="/" component={Home} />
@@ -69,7 +69,7 @@ const Root = ({ refetch, session }: any) => (
         <Route exact={true} path="/profile" component={Profile} />
         <Redirect to="/" />
       </Switch>
-    </div>
+    </>
   </BrowserRouter>
 );
 
