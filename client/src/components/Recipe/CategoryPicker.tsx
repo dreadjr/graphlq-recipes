@@ -2,7 +2,7 @@ import * as React from 'react';
 import { InputLabel, Select } from '@material-ui/core';
 
 import { CategoryItem } from '../StyledComponents/Form/AddRecipe/AddRecipe';
-import Toggle from '../Toggle/Toggle';
+import { Toggle } from '../Toggle/Toggle';
 
 interface CategoryPickerProps {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;

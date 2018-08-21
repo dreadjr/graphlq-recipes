@@ -13,7 +13,7 @@ interface ToggleState {
   isOn: boolean;
 }
 
-export default class Toggle extends React.Component<ToggleProps, ToggleState> {
+export class Toggle extends React.Component<ToggleProps, ToggleState> {
   public state: ToggleState = {
     isOn: false
   };

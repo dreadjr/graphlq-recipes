@@ -162,7 +162,6 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
                     name="instructions"
                     onChange={this.onChangeHandler}
                   />
-
                   <div
                     style={{
                       display: 'flex',
