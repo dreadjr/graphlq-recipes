@@ -1,17 +1,9 @@
 import * as React from 'react';
 
-interface InjectedToggleProps {
-  on: boolean;
-  onToggle: () => void;
-}
-
-interface ToggleProps {
-  children(props: InjectedToggleProps): JSX.Element;
-}
-
-interface ToggleState {
-  isOn: boolean;
-}
+import {
+  ToggleProps,
+  ToggleState
+} from '../../interfaces/Toggle/toggle.interface';
 
 export class Toggle extends React.Component<ToggleProps, ToggleState> {
   public state: ToggleState = {

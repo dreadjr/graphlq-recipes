@@ -15,7 +15,7 @@ class Home extends React.Component {
     return (
       <>
         <h1>Home</h1>
-        <Query<GetAllRecipeData, {}> query={getAllRecipes}>
+        <Query<GetAllRecipeData> query={getAllRecipes}>
           {({ data, loading, error }) => {
             if (loading || !data) {
               return null;

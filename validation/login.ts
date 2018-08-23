@@ -4,7 +4,7 @@ import { IAuthErrors } from '../interfaces/authErrors.interface';
 import { isEmpty } from './isEmpty';
 
 export const validateLogin = (data: IUser) => {
-  let errors: IAuthErrors = {};
+  const errors: IAuthErrors = {};
 
   data.email = !isEmpty(data.email) ? data.email : '';
   data.password = !isEmpty(data.password) ? data.password : '';

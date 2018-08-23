@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Query } from 'react-apollo';
 import { getRecipe } from '../../queries';
-
-import { Button } from '@material-ui/core';
 
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
 

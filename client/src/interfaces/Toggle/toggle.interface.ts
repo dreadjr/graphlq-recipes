@@ -3,11 +3,9 @@ interface InjectedToggleProps {
   onToggle: () => void;
 }
 
-interface ToggleChildrenProps {
+export interface ToggleProps {
   children(props: InjectedToggleProps): JSX.Element;
 }
-
-export type ToggleProps = InjectedToggleProps & ToggleChildrenProps;
 
 export interface ToggleState {
   isOn: boolean;
