@@ -49,6 +49,8 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
       ...this.state,
       [name]: value
     });
+
+    console.log(this.state.category);
   };
 
   public onSubmitHandler = async (

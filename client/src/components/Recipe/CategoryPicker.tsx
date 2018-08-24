@@ -14,22 +14,16 @@ export default (props: CategoryPickerProps) => (
     {({ on, onToggle }) => {
       return (
         <>
-          <InputLabel htmlFor="select-category">Category</InputLabel>
+          <InputLabel>Category</InputLabel>
           <Select
             onClose={onToggle}
             onOpen={onToggle}
             open={on}
             value={props.value}
-            inputProps={{
-              name: 'category',
-              id: 'select-category'
-            }}
             onChange={props.onChange}
             style={{ width: '30rem' }}
           >
-            <CategoryItem value={'Breakfast'} onChange={props.onChange}>
-              Breakfast
-            </CategoryItem>
+            <CategoryItem value={'Breakfast'}>Breakfast</CategoryItem>
             <CategoryItem value={'Lunch'}>Lunch</CategoryItem>
             <CategoryItem value={'Dinner'}>Dinner</CategoryItem>
             <CategoryItem value={'Snack'}>Snack</CategoryItem>
