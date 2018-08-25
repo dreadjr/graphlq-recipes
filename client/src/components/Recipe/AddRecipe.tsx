@@ -19,7 +19,7 @@ import {
   AddRecipeProps,
   AddRecipeData,
   AddRecipeVariables
-} from '../../interfaces/Recipe/recipe.interface';
+} from '../../interfaces/Recipe/addRecipe.interface';
 
 import { Mutation } from 'react-apollo';
 

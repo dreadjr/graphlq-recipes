@@ -4,10 +4,7 @@ import { InputLabel, Select } from '@material-ui/core';
 import { CategoryItem } from '../StyledComponents/Form/AddRecipe/AddRecipe';
 import { Toggle } from '../Toggle/Toggle';
 
-interface CategoryPickerProps {
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  value: string;
-}
+import { CategoryPickerProps } from '../../interfaces/Recipe/categoryPicker.interface';
 
 export default (props: CategoryPickerProps) => (
   <Toggle>
