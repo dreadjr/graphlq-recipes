@@ -42,7 +42,9 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
     this.setState({ username: this.props.session.getCurrentUser.username });
   }
 
-  public onChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  public onChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.currentTarget;
 
     this.setState({
@@ -83,12 +85,12 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
   };
 
   public updateCache = (cache: InMemoryCache, { data: { addRecipe } }: any) => {
-    const { GET_ALL_RECIPES } = cache.readQuery({ query: getAllRecipes });
+    const { getAllRecipes: gAR } = cache.readQuery({ query: getAllRecipes });
 
-    return cache.writeQuery({
+    cache.writeQuery({
       query: getAllRecipes,
       data: {
-        GET_ALL_RECIPES: [addRecipe, ...GET_ALL_RECIPES]
+        getAllRecipes: [addRecipe, ...gAR]
       }
     });
   };

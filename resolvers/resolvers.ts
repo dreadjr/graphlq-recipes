@@ -28,8 +28,17 @@ export const resolvers = {
         email: currentUser.email
       }).populate({ path: 'favorites', model: 'Recipe' });
     },
+
     getRecipe: async (root, { _id }, { Recipe }) =>
-      await Recipe.findOne({ _id })
+      await Recipe.findOne({ _id }),
+
+    searchRecipes: async (root, { searchTerm }, { Recipe }) => {
+      if (searchTerm) {
+        return await Recipe.find().filter(Recipe.name === searchTerm);
+      } else {
+        return await Recipe.find().sort({ likes: 'desc', createdDate: 'desc' });
+      }
+    }
   },
   Mutation: {
     addRecipe: async (root, args, { Recipe }) => {
