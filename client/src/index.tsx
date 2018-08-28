@@ -12,7 +12,7 @@ import Home from './components/Home/Home';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import Navbar from './components/Navigation/Navbar';
-import Search from './components/Recipe/Search';
+import { Search } from './components/Recipe/Search';
 import AddRecipe from './components/Recipe/AddRecipe';
 import RecipePage from './components/Recipe/RecipePage';
 import { Profile } from './components/Profile/Profile';
@@ -66,7 +66,7 @@ const Root = ({ refetch, session }: any) => (
           render={() => <AddRecipe session={session} />}
         />
         <Route exact={true} path="/recipe/:_id" component={RecipePage} />
-        <Route exact={true} path="/profile" component={Profile} />
+        <Route exact={true} path="/profile" render={() => <Profile />} />
         <Redirect to="/" />
       </Switch>
     </>

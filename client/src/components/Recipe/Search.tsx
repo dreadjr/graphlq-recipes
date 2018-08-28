@@ -1,51 +1,65 @@
 import * as React from 'react';
-import { TextField, Typography } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 import searchRecipes from '../../queries/searchRecipes';
 
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
 
-import { Query } from 'react-apollo';
+import ThemeWrapper from '../StyledComponents/MaterialUI/Theme';
 
-import {
-  SearchRecipesData,
-  SearchRecipesVariables
-} from '../../interfaces/Recipe/searchRecipes.interface';
+import { ApolloConsumer } from 'react-apollo';
+
 import { IRecipe } from '../../interfaces/Recipe/recipe.interface';
 
-export default () => (
-  <Query<SearchRecipesData, SearchRecipesVariables>
-    query={searchRecipes}
-    variables={{ searchTerm: '' }}
-  >
-    {({ data, loading, error }) => {
-      if (loading || !data) {
-        return null;
-      }
+import SearchItem from './SearchItem';
 
-      if (error) {
-        return <>Error</>;
-      }
+export class Search extends React.Component {
+  public state = {
+    searchResults: []
+  };
 
-      return (
-        <>
-          <ComponentWrapper>
-            <TextField
-              label={'Search Recipes'}
-              margin="normal"
-              name="instructions"
-            />
+  public onChangeHandler = ({ searchRecipes }: any) => {
+    this.setState({
+      searchResults: searchRecipes
+    });
+  };
+
+  public render() {
+    const { searchResults } = this.state;
+
+    return (
+      <ApolloConsumer>
+        {client => (
+          <>
+            <ComponentWrapper>
+              <ThemeWrapper>
+                <TextField
+                  label={'Search Recipes'}
+                  margin="normal"
+                  name="instructions"
+                  onChange={async event => {
+                    event.persist();
+                    const { data } = await client.query({
+                      query: searchRecipes,
+                      variables: { searchTerm: event.currentTarget.value }
+                    });
+                    this.onChangeHandler(data);
+                  }}
+                />
+              </ThemeWrapper>
+            </ComponentWrapper>
             <ul>
-              {data.searchRecipes.map((recipe: IRecipe) => {
-                <li key={recipe._id}>
-                  <Typography>{recipe.name}</Typography>
-                  <Typography>{recipe.likes}</Typography>
-                </li>;
-              })}
+              <ComponentWrapper
+                style={{ flexDirection: 'column', alignItems: 'center' }}
+              >
+                {searchResults.map((recipe: IRecipe) => (
+                  <SearchItem key={recipe._id} {...recipe} />
+                ))}
+              </ComponentWrapper>
             </ul>
-          </ComponentWrapper>
-        </>
-      );
-    }}
-  </Query>
-);
+          </>
+        )}
+      </ApolloConsumer>
+    );
+  }
+}

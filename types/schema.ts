@@ -29,7 +29,7 @@ export default gql`
     getCurrentUser: User
     getAllRecipes: [Recipe!]
     getRecipe(_id: ID!): Recipe
-    searchRecipes: (searchTerm: String): [Recipe]
+    searchRecipes(searchTerm: String): [Recipe]
   }
 
   type Mutation {

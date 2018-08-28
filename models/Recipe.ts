@@ -31,4 +31,8 @@ const RecipeSchema: Schema = new Schema({
   }
 });
 
+RecipeSchema.index({
+  '$**': 'text'
+});
+
 export default model<IRecipe>('Recipe', RecipeSchema);

@@ -1,4 +1,8 @@
 import * as React from 'react';
-import { Typography } from '@material-ui/core';
+import UserInfo from './UserInfo';
 
-export const Profile = () => <Typography>Profile</Typography>;
+export const Profile = () => (
+  <div>
+    <UserInfo />
+  </div>
+);
