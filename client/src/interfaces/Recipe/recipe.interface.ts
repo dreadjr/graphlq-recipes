@@ -4,7 +4,7 @@ export interface IRecipe {
   category: string;
   description: string;
   instructions: string;
-  createdDate: Date;
+  createdDate?: Date;
   likes: number;
   username: string;
 }
@@ -20,15 +20,7 @@ export interface GetAllRecipeData {
 }
 
 export interface GetRecipeData {
-  getRecipe: {
-    _id: string;
-    name: string;
-    category: string;
-    description: string;
-    instructions: string;
-    likes: number;
-    username: string;
-  };
+  getRecipe: IRecipe;
 }
 
 export interface GetRecipeVariables {
