@@ -6,6 +6,10 @@ export default gql`
       username
       email
       joinDate
+      favorites {
+        _id
+        name
+      }
     }
   }
 `;
