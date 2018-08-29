@@ -4,7 +4,7 @@ interface InjectedToggleProps {
 }
 
 export interface ToggleProps {
-  children(props: InjectedToggleProps): JSX.Element;
+  children: (props: InjectedToggleProps) => JSX.Element;
 }
 
 export interface ToggleState {

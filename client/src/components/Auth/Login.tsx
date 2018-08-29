@@ -109,7 +109,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                       <FormButton
                         variant="contained"
                         color="primary"
-                        wide={true.toString()}
+                        wide="true"
                         onClick={loginUser => this.onSubmitHandler}
                         disabled={this.validateForm()}
                         type="submit"
@@ -120,7 +120,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                         <FormButton
                           variant="contained"
                           color="primary"
-                          wide={true.toString()}
+                          wide="true"
                         >
                           Or Register
                         </FormButton>

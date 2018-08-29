@@ -19,7 +19,7 @@ import { withRouter } from 'react-router-dom';
 const NavBar = (props: NavBarProps) => {
   const { session } = props;
 
-  let authButtons;
+  let authButtons: JSX.Element;
 
   if (session && session.getCurrentUser) {
     authButtons = (

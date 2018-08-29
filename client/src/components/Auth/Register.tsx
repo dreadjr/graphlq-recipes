@@ -129,7 +129,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                       <FormButton
                         variant="contained"
                         color="primary"
-                        wide={true.toString()}
+                        wide="true"
                         type="submit"
                         disabled={this.validateForm()}
                       >
@@ -139,7 +139,7 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                         <FormButton
                           variant="contained"
                           color="primary"
-                          wide={true.toString()}
+                          wide="true"
                         >
                           Or Login
                         </FormButton>
