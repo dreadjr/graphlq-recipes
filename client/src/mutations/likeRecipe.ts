@@ -8,3 +8,12 @@ export const LIKE_RECIPE = gql`
     }
   }
 `;
+
+export const UNLIKE_RECIPE = gql`
+  mutation UnlikeRecipe($_id: ID!, $username: String!) {
+    unLikeRecipe(_id: $_id, username: $username) {
+      _id
+      likes
+    }
+  }
+`;

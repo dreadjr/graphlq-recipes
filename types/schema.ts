@@ -55,6 +55,7 @@ export default gql`
     ): Recipe!
 
     likeRecipe(_id: ID!, username: String!): Recipe
+    unLikeRecipe(_id: ID!, username: String!): Recipe
 
     registerUser(
       username: String!
