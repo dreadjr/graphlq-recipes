@@ -19,6 +19,11 @@ export const resolvers = {
     getAllRecipes: async (root, {}, { Recipe }) =>
       await Recipe.find().sort({ createdDate: 'DESC' }),
 
+    getUserRecipes: async (root, { username }, { Recipe }) =>
+      await Recipe.find({ username }).sort({
+        createdDate: 'DESC'
+      }),
+
     getCurrentUser: async (root, {}, { currentUser, User }) => {
       if (!currentUser) {
         return null;
@@ -72,7 +77,7 @@ export const resolvers = {
     getRecipe: async (root, { _id }, { Recipe }) =>
       await Recipe.findById({ _id }),
 
-    deleteRecipe: async (root, { _id }, { Recipe }) =>
+    deleteUserRecipe: async (root, { _id }, { Recipe }) =>
       await Recipe.findByIdAndRemove({ _id }),
 
     editRecipe: async (root, args, { Recipe }) =>

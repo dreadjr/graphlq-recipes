@@ -30,6 +30,7 @@ export default gql`
     getAllRecipes: [Recipe!]
     getRecipe(_id: ID!): Recipe
     searchRecipes(searchTerm: String): [Recipe]
+    getUserRecipes(username: String!): [Recipe]
   }
 
   type Mutation {
@@ -43,7 +44,7 @@ export default gql`
 
     getRecipe(_id: ID!): Recipe!
 
-    deleteRecipe(_id: ID!): Boolean!
+    deleteUserRecipe(_id: ID!): Recipe
 
     editRecipe(
       _id: ID!

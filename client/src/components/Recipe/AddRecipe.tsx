@@ -13,6 +13,7 @@ import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
 import CategoryPicker from './CategoryPicker';
 
 import { withRouter } from 'react-router-dom';
+import { withAuth } from '../withAuth';
 
 import {
   AddRecipeState,
@@ -194,4 +195,6 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
   }
 }
 
-export default withRouter(AddRecipe);
+export default withAuth((session: any) => session && session.getCurrentUser)(
+  withRouter(AddRecipe)
+);

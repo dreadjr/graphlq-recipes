@@ -15,7 +15,7 @@ import Navbar from './components/Navigation/Navbar';
 import { Search } from './components/Recipe/Search';
 import AddRecipe from './components/Recipe/AddRecipe';
 import RecipePage from './components/Recipe/RecipePage';
-import { Profile } from './components/Profile/Profile';
+import Profile from './components/Profile/Profile';
 
 import { withSession } from './components/withSession';
 

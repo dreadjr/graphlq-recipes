@@ -1,14 +1,9 @@
 import { gql } from 'apollo-boost';
 
-export const DELETE_RECIPE = gql`
-  mutation DeleteRecipe($id: String!) {
-    deleteRecipe(id: $id) {
+export const DELETE_USER_RECIPE = gql`
+  mutation DeleteUserRecipe($_id: ID!) {
+    deleteUserRecipe(_id: $_id) {
       _id
-      name
-      description
-      category
-      instructions
-      username
     }
   }
 `;
