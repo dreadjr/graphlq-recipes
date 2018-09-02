@@ -78,7 +78,7 @@ export const resolvers = {
       await Recipe.findById({ _id }),
 
     deleteUserRecipe: async (root, { _id }, { Recipe }) =>
-      await Recipe.findByIdAndRemove({ _id }),
+      await Recipe.findOneAndRemove({ _id }),
 
     editRecipe: async (root, args, { Recipe }) =>
       await Recipe.findByIdAndUpdate(

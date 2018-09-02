@@ -27,7 +27,7 @@ import { Mutation } from 'react-apollo';
 import { InMemoryCache } from 'apollo-boost';
 
 import { ADD_RECIPE } from '../../mutations';
-import { getAllRecipes } from '../../queries';
+import { getAllRecipes, getUserRecipes } from '../../queries';
 
 class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
   public state: AddRecipeState = {
@@ -67,7 +67,7 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
       this.setState({ errors: {} });
       this.props.history.push('/');
     } catch (error) {
-      console.log(error);
+      console.log('[SUBMIT]', error);
       const {
         graphQLErrors: [
           {
@@ -87,7 +87,6 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
 
   public updateCache = (cache: InMemoryCache, { data: { addRecipe } }: any) => {
     const { getAllRecipes: gAR } = cache.readQuery({ query: getAllRecipes });
-
     cache.writeQuery({
       query: getAllRecipes,
       data: {
@@ -110,9 +109,12 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
       <Mutation<AddRecipeData, AddRecipeVariables>
         mutation={ADD_RECIPE}
         variables={{ name, description, instructions, category, username }}
+        refetchQueries={() => [
+          { query: getUserRecipes, variables: { username } }
+        ]}
         update={this.updateCache}
       >
-        {(addRecipe, { data, loading, error }: any) => {
+        {(addRecipe, { data, loading, error }) => {
           if (loading) {
             return null;
           }

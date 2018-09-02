@@ -2,7 +2,7 @@ import * as React from 'react';
 import UserInfo from './UserInfo';
 import { ProfileProps } from '../../interfaces/Profile/profile.interface';
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
-import UserRecipes from './UserRecipes';
+import { UserRecipes } from './UserRecipes';
 import { withAuth } from '../withAuth';
 
 const Profile = (props: ProfileProps) => {

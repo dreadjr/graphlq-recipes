@@ -26,18 +26,23 @@ export default (props: UserInfoProps) => {
         Join Date: {formatDate(currentUser.joinDate)}
       </Typography>
       <ul style={{ textAlign: 'center' }}>
-        <Typography variant="display3" style={{ paddingBottom: '1.5rem' }}>
+        <Typography
+          variant="display3"
+          style={{ paddingBottom: '1.5rem' }}
+          onClick={() => console.log(currentUser)}
+        >
           {currentUser.username}
           's Favorites
         </Typography>
-        {currentUser.favorites.map((favorite: IFavorite) => (
-          <li key={favorite._id} style={{ listStyle: 'none' }}>
-            <Link to={`/recipes/${favorite._id}`}>
-              <Typography variant="display3">{favorite.name}</Typography>
-            </Link>
-          </li>
-        ))}
-        {!currentUser.favorites.length && (
+        {currentUser.favorites.length >= 1 ? (
+          currentUser.favorites.map((favorite: IFavorite) => (
+            <li key={favorite._id} style={{ listStyle: 'none' }}>
+              <Link to={`/recipes/${favorite._id}`}>
+                <Typography variant="display3">{favorite.name}</Typography>
+              </Link>
+            </li>
+          ))
+        ) : (
           <Typography variant="display1">
             <strong>You have no favorites currently. Go add some!</strong>
           </Typography>
