@@ -54,6 +54,8 @@ export default gql`
       instructions: String
     ): Recipe!
 
+    likeRecipe(_id: ID!, username: String!): Recipe
+
     registerUser(
       username: String!
       email: String!

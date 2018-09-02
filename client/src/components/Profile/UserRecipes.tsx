@@ -48,13 +48,18 @@ export class UserRecipes extends React.Component<UserRecipesProps, {}> {
           return (
             <>
               <Typography variant="display3">Your Recipes</Typography>
+              {!data.getUserRecipes.length && (
+                <Typography>You have no added any recipes yet!</Typography>
+              )}
               {data.getUserRecipes.map((recipe: IRecipe) => (
                 <li
                   key={recipe._id}
                   style={{ listStyle: 'none', textAlign: 'center' }}
                 >
                   <Link to={`/recipe/${recipe._id}`}>
-                    <Typography variant="display2">{recipe.name}</Typography>
+                    <Typography variant="display2">
+                      Name: {recipe.name}
+                    </Typography>
                   </Link>
                   <Typography variant="display1" style={{ padding: '1rem 0' }}>
                     Likes: {recipe.likes}
