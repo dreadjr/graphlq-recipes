@@ -57,13 +57,11 @@ app.use(bodyParser.json());
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    return {
-      User,
-      Recipe,
-      currentUser: req.currentUser
-    };
-  }
+  context: ({ req: { currentUser } }) => ({
+    User,
+    Recipe,
+    currentUser
+  })
 });
 
 server.applyMiddleware({ app });
@@ -71,28 +69,3 @@ server.applyMiddleware({ app });
 app.listen(port, () =>
   console.log(`Server listening at localhost:${port}${server.graphqlPath}`)
 );
-
-// class Server {
-//   public app: express.Application;
-
-//   public config(): void {
-//     const MONGO_URI: string = test.TEST_DB;
-//     mongoose.connect(
-//       MONGO_URI || process.env.MONGODB_URI,
-//       { useNewUrlParser: true }
-//     );
-
-//     this.app.use(bodyParser.urlencoded({ extended: true }));
-//     this.app.use(bodyParser.json());
-//   }
-
-//   public routes(): void {
-
-//   }
-
-//   constructor() {
-//     this.app = express();
-//     this.config();
-//     this.routes();
-//   }
-// }

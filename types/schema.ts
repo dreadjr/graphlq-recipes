@@ -8,6 +8,7 @@ export default gql`
     email: String! @unique
     joinDate: String
     favorites: [Recipe!]
+    isAdmin: Boolean!
   }
 
   type Recipe {
@@ -27,6 +28,7 @@ export default gql`
 
   type Query {
     getCurrentUser: User
+    getAllUsers: [User!]!
     getAllRecipes: [Recipe!]
     getRecipe(_id: ID!): Recipe
     searchRecipes(searchTerm: String): [Recipe]
@@ -62,6 +64,7 @@ export default gql`
       email: String!
       password: String!
       confirmPassword: String!
+      isAdmin: Boolean
     ): Token
 
     loginUser(email: String!, password: String!): Token

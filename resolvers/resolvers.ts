@@ -9,9 +9,9 @@ import { validateRecipe } from '../validation/recipe';
 import { validateLogin } from '../validation/login';
 
 const createToken = (user, secret, expiresIn) => {
-  const { username, email } = user;
+  const { username, email, isAdmin } = user;
 
-  return jwt.sign({ username, email }, secret, { expiresIn });
+  return jwt.sign({ username, email, isAdmin }, secret, { expiresIn });
 };
 
 export const resolvers = {
@@ -33,6 +33,8 @@ export const resolvers = {
         email: currentUser.email
       }).populate({ path: 'favorites', model: 'Recipe' });
     },
+
+    getAllUsers: async (root, {}, { User }) => await User.find(),
 
     getRecipe: async (root, { _id }, { Recipe }) =>
       await Recipe.findOne({ _id }),
@@ -142,7 +144,7 @@ export const resolvers = {
         throw new UserInputError('Validation Error', errors);
       }
 
-      const { username, email, password, confirmPassword } = args;
+      const { username, email, password, confirmPassword, isAdmin } = args;
 
       const user = await User.findOne({ email });
 
@@ -156,7 +158,8 @@ export const resolvers = {
         const newUser = await new User({
           username,
           email,
-          password: hashedPassword
+          password: hashedPassword,
+          isAdmin
         }).save();
         return { token: createToken(newUser, SECRET, '1hr') };
       }

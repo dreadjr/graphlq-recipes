@@ -27,6 +27,10 @@ const UserSchema: Schema = new Schema({
   favorites: {
     type: [Schema.Types.ObjectId],
     ref: 'Recipe'
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   }
 });
 

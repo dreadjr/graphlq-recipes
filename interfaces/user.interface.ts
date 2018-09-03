@@ -8,4 +8,5 @@ export interface IUser extends Document {
   email: string;
   joinDate: Date;
   favorites: [IRecipe];
+  isAdmin: boolean;
 }

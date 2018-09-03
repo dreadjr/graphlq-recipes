@@ -14,11 +14,11 @@ export const validateRegister = (data: IUser) => {
     : '';
 
   if (!Validator.isLength(data.username, { min: 2, max: 30 })) {
-    errors.username = 'Name must be between 2 and 30 characters';
+    errors.username = 'Username must be between 2 and 30 characters';
   }
 
   if (Validator.isEmpty(data.username)) {
-    errors.username = 'Name field is required';
+    errors.username = 'Username field is required';
   }
 
   if (!Validator.isEmail(data.email)) {

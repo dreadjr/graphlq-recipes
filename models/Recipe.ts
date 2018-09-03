@@ -31,6 +31,7 @@ const RecipeSchema: Schema = new Schema({
   }
 });
 
+// This has to do with the search component
 RecipeSchema.index({
   '$**': 'text'
 });
