@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IRecipe } from '../interfaces/recipe.interface';
+import { RecipeImp } from '../interfaces/recipe.interface';
 
 const RecipeSchema: Schema = new Schema({
   name: {
@@ -36,4 +36,4 @@ RecipeSchema.index({
   '$**': 'text'
 });
 
-export default model<IRecipe>('Recipe', RecipeSchema);
+export default model<RecipeImp>('Recipe', RecipeSchema);

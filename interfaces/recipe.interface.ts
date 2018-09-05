@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface IRecipe extends Document {
+export interface Recipe extends Document {
   name: string;
   category: string;
   description: string;
@@ -8,4 +8,11 @@ export interface IRecipe extends Document {
   createdDate: Date;
   likes: number;
   username: string;
+}
+
+export interface RecipeValidationErrors {
+  name?: string;
+  description?: string;
+  category?: string;
+  instructions?: string;
 }

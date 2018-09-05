@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from '../interfaces/user.interface';
-
-import * as bcrypt from 'bcrypt';
+import { UserImp } from '../interfaces/auth.interface';
+// import * as bcrypt from 'bcrypt';
 
 const UserSchema: Schema = new Schema({
   username: {
@@ -51,4 +50,4 @@ const UserSchema: Schema = new Schema({
 //   }
 // })
 
-export default model<IUser>('User', UserSchema);
+export default model<UserImp>('User', UserSchema);

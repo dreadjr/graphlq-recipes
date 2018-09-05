@@ -1,10 +1,9 @@
 import * as Validator from 'validator';
-import { IUser } from '../interfaces/user.interface';
-import { IAuthErrors } from '../interfaces/authErrors.interface';
+import { UserImp, AuthErrorsImp } from '../interfaces/auth.interface';
 import { isEmpty } from './isEmpty';
 
-export const validateLogin = (data: IUser) => {
-  const errors: IAuthErrors = {};
+export const validateLogin = (data: UserImp) => {
+  const errors: AuthErrorsImp = {};
 
   data.email = !isEmpty(data.email) ? data.email : '';
   data.password = !isEmpty(data.password) ? data.password : '';
