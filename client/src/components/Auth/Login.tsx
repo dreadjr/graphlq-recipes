@@ -17,6 +17,7 @@ import { FormContainer } from '../StyledComponents/Form/FormContainer';
 import { FormButton } from '../StyledComponents/Button/Button';
 
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
+import { catchValidationErrors } from '../../utils/catchValidationErrors';
 
 class Login extends React.Component<LoginProps, LoginState> {
   public state: LoginState = {
@@ -34,27 +35,23 @@ class Login extends React.Component<LoginProps, LoginState> {
     });
   };
 
+  public onLoginUserAndRedirect = async (loginUser: any) => {
+    const data = await loginUser();
+    localStorage.setItem('jwtToken', data.data.loginUser.token);
+    await this.props.refetch();
+    this.setState({ errors: {} });
+    this.props.history.push('/');
+  };
+
   public onSubmitHandler = async (
     event: React.FormEvent<HTMLFormElement>,
     loginUser: any
   ) => {
     event.preventDefault();
-
     try {
-      const data = await loginUser();
-      localStorage.setItem('jwtToken', data.data.loginUser.token);
-      await this.props.refetch();
-      this.setState({ errors: {} });
-      this.props.history.push('/');
+      await this.onLoginUserAndRedirect(loginUser);
     } catch (error) {
-      const {
-        graphQLErrors: [
-          {
-            extensions: { exception: errors }
-          }
-        ]
-      } = error;
-
+      const { errors } = await catchValidationErrors(error);
       this.setState({ errors });
     }
   };

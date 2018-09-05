@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { REGISTER_USER } from '../../mutations';
-import { Mutation } from 'react-apollo';
+import { Mutation, MutationFn } from 'react-apollo';
 import {
   RegisterState,
   RegisterProps,
@@ -15,8 +15,8 @@ import ThemeWrapper from '../StyledComponents/MaterialUI/Theme';
 import { TextField, Typography } from '@material-ui/core';
 import { FormContainer } from '../StyledComponents/Form/FormContainer';
 import { FormButton } from '../StyledComponents/Button/Button';
-
 import { ComponentWrapper } from '../StyledComponents/ComponentWrapper';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
 class Register extends React.Component<RegisterProps, RegisterState> {
   public state: RegisterState = {
@@ -36,24 +36,21 @@ class Register extends React.Component<RegisterProps, RegisterState> {
     });
   };
 
+  public onRegisterUserAndRedirect = async (registerUser: MutationFn) => {
+    await registerUser();
+    this.setState({ errors: {} });
+    this.props.history.push('/login');
+  };
+
   public onSubmitHandler = async (
     event: React.FormEvent<HTMLFormElement>,
-    registerUser: any
+    registerUser: MutationFn
   ) => {
     event.preventDefault();
     try {
-      await registerUser();
-      this.setState({ errors: {} });
-      this.props.history.push('/login');
+      await this.onRegisterUserAndRedirect(registerUser);
     } catch (error) {
-      const {
-        graphQLErrors: [
-          {
-            extensions: { exception: errors }
-          }
-        ]
-      } = error;
-
+      const { errors } = await getValidationErrors(error);
       this.setState({ errors });
     }
   };

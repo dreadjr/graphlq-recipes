@@ -28,6 +28,7 @@ import { InMemoryCache } from 'apollo-boost';
 
 import { ADD_RECIPE } from '../../mutations';
 import { getAllRecipes, getUserRecipes } from '../../queries';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
 class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
   public state: AddRecipeState = {
@@ -56,6 +57,12 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
     console.log(this.state.category);
   };
 
+  public onAddRecipeAndRedirect = async (addRecipe: any) => {
+    await addRecipe();
+    this.setState({ errors: {} });
+    this.props.history.push('/');
+  };
+
   public onSubmitHandler = async (
     event: React.FormEvent<HTMLFormElement>,
     addRecipe: any
@@ -63,19 +70,9 @@ class AddRecipe extends React.Component<AddRecipeProps, AddRecipeState> {
     event.preventDefault();
 
     try {
-      await addRecipe();
-      this.setState({ errors: {} });
-      this.props.history.push('/');
+      await this.onAddRecipeAndRedirect(addRecipe);
     } catch (error) {
-      console.log('[SUBMIT]', error);
-      const {
-        graphQLErrors: [
-          {
-            extensions: { exception: errors }
-          }
-        ]
-      } = error;
-
+      const { errors } = await getValidationErrors(error);
       this.setState({ errors });
     }
   };
