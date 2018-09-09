@@ -66,7 +66,7 @@ export const resolvers = {
 
       const { name, description, category, instructions, username } = args;
 
-      const newRecipe = await new Recipe({
+      const newRecipe = new Recipe({
         name,
         description,
         category,

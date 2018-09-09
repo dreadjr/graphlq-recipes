@@ -1,9 +1,9 @@
 import * as Validator from 'validator';
-import { RecipeImp, RecipeErrorsImp } from '../interfaces/recipe.interface';
 import { isEmpty } from './isEmpty';
+import { Recipe, RecipeErrors } from '../interfaces/recipe.interface';
 
-export const validateRecipe = (recipe: RecipeImp) => {
-  const errors: RecipeErrorsImp = {};
+export const validateRecipe = (recipe: Recipe) => {
+  const errors: RecipeErrors = {};
 
   recipe.name = !isEmpty(recipe.name) ? recipe.name : '';
   recipe.description = !isEmpty(recipe.description) ? recipe.description : '';

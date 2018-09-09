@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { RecipeImp } from './recipe.interface';
+import { Recipe } from './recipe.interface';
 
 export interface UserImp extends Document {
   username: string;
@@ -7,7 +7,7 @@ export interface UserImp extends Document {
   confirmPassword: string;
   email: string;
   joinDate: Date;
-  favorites: [RecipeImp];
+  favorites: [Recipe];
   isAdmin: boolean;
 }
 

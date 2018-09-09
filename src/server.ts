@@ -16,8 +16,6 @@ import Recipe from '../models/Recipe';
 
 import { MONGO_URI, SECRET } from '../config/keys';
 
-const port = process.env.PORT || 4000;
-
 mongoose
   .connect(
     process.env.MONGODB_URI || MONGO_URI,
@@ -65,6 +63,8 @@ const server = new ApolloServer({
 });
 
 server.applyMiddleware({ app });
+
+const port = process.env.PORT || 4000;
 
 app.listen(port, () =>
   console.log(`Server listening at localhost:${port}${server.graphqlPath}`)

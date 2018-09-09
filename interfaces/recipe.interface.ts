@@ -10,7 +10,7 @@ export interface Recipe extends Document {
   username: string;
 }
 
-export interface RecipeValidationErrors {
+export interface RecipeErrors {
   name?: string;
   description?: string;
   category?: string;
